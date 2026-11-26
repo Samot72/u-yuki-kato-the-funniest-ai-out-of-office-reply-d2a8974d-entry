@@ -20,6 +20,12 @@ if (codePoints.length < 1 || codePoints.length > 160) {
 }
 if (ENTRY.trim().length === 0) fail("entry is empty or only whitespace");
 if (/[\r\n]/.test(ENTRY)) fail("entry must be a single line");
+if (/\s{2,}/.test(ENTRY)) fail("entry must not contain double spaces");
+if (ENTRY !== ENTRY.trim()) fail("entry must not start or end with whitespace");
+for (const ch of ENTRY) {
+  const code = ch.codePointAt(0);
+  if (code < 0x20 || code === 0x7f) fail("entry must not contain control characters");
+}
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 mkdirSync(outDir, { recursive: true });
