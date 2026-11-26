@@ -25,6 +25,9 @@ if (ENTRY !== ENTRY.trim()) fail("entry must not start or end with whitespace");
 for (const ch of ENTRY) {
   const code = ch.codePointAt(0);
   if (code < 0x20 || code === 0x7f) fail("entry must not contain control characters");
+  if (code === 0xfeff || code === 0x00a0 || (code >= 0x200b && code <= 0x200f)) {
+    fail("entry must not contain invisible formatting characters");
+  }
 }
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
